@@ -40,7 +40,6 @@ public class ReportGenerator extends Frame {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(label);
 
-
         Date today = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
@@ -61,6 +60,8 @@ public class ReportGenerator extends Frame {
         JButton runReportButton = new JButton("Generate report");
         runReportButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         runReportButton.setEnabled(false);
+        runReportButton.addActionListener(uiHandler);
+        runReportButton.setActionCommand(UIHandler.RUN_REPORT);
         uiHandler.setRunReportButton(runReportButton);
 
         panel.add(runReportButton);

@@ -1,9 +1,11 @@
+import model.Account;
 import service.DataService;
 import service.PrintService;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class UIHandler implements ActionListener {
     public static final String IMPORT_USERS = "importUsers";
@@ -34,7 +36,8 @@ public class UIHandler implements ActionListener {
                 dataService.importData();
                 break;
             case RUN_REPORT:
-
+                List<Account> accountList = dataService.getAccountList();
+                printService.printReport(accountList);
         }
         if(dataService.getDataLoaded()) {
             runReportButton.setEnabled(true);
