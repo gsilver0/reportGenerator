@@ -55,7 +55,9 @@ public class ReportGenerator extends Frame {
 
         yearDropdown.setMaximumSize(yearDropdown.getPreferredSize());
         yearDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
+        uiHandler.setYearDropdown(yearDropdown);
         panel.add(yearDropdown);
+
 
         JButton runReportButton = new JButton("Generate report");
         runReportButton.setAlignmentX(Component.CENTER_ALIGNMENT);

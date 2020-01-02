@@ -1,4 +1,5 @@
 import model.Account;
+import model.UsageRecord;
 import service.DataService;
 import service.PrintService;
 
@@ -14,6 +15,7 @@ public class UIHandler implements ActionListener {
     private DataService dataService;
     private PrintService printService;
     JButton runReportButton;
+    JComboBox<Integer> yearDropdown;
 
     public UIHandler() {
         dataService = new DataService();
@@ -22,6 +24,10 @@ public class UIHandler implements ActionListener {
 
     public void setRunReportButton(JButton runReportButton) {
         this.runReportButton = runReportButton;
+    }
+
+    public void setYearDropdown(JComboBox<Integer> yearDropdown) {
+        this.yearDropdown = yearDropdown;
     }
 
 
@@ -37,7 +43,8 @@ public class UIHandler implements ActionListener {
                 break;
             case RUN_REPORT:
                 List<Account> accountList = dataService.getAccountList();
-                printService.printReport(accountList);
+                List<UsageRecord> usageRecordList = dataService.getUsageRecordList();
+                printService.printReport(accountList, usageRecordList, Integer.parseInt(yearDropdown.getSelectedItem().toString()));
         }
         if(dataService.getDataLoaded()) {
             runReportButton.setEnabled(true);

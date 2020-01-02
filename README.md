@@ -2,6 +2,8 @@
 A simple cell phone usage report generator
 
 There are discrepancies in the data model between the readme and the csv files. I will assume that the project will be to read the CSVs.
+There is a misspelling in one of the CSV files. The originally supplied CellPhoneUsageByMonth csv will be rejected. After correcting the misspelling, it will be accepted.
+The CSV file checked into this repository will have this corrected, but it can be tested with the original file.
 
 While not present in the CSV files, the instructions suggest that employees may replace their cell phones. The test cases should verify that the reports properly update before and after a changeover occurs. Also, I will assume that the different phones will be represented on separate lines, as a changeover could occur any time during a month.
 Because there is no data to tie a particular call to a particular phone, I will assume that employees will have a single phone active at any time, and that phones are activated immediately upon purchase.

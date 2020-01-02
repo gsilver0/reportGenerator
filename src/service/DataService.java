@@ -1,6 +1,7 @@
 package service;
 
 import model.Account;
+import model.UsageRecord;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,24 +12,22 @@ import java.util.List;
 public class DataService {
     private static final String DELIMITER = ",";
     private SimpleDateFormat userDateFormat = new SimpleDateFormat("yyyymmdd");
+    private SimpleDateFormat usageDateFormat = new SimpleDateFormat("mm/dd/yyyy");
 
     boolean dataImported = false;
     boolean usersImported = false;
 
     private List<Account> accountList;
-
-
-    //User headers:
-
+    private List<UsageRecord> usageRecordList;
 
     public DataService() {
         accountList = new ArrayList<>();
+        usageRecordList = new ArrayList<>();
     }
 
     public void importUsers() {
         String inputFile = "CellPhone.csv"; //TODO: Replace with file open dialog
         BufferedReader fileReader = null;
-        //employeeId,employeeName,purchaseDate,model
         Integer employeeIdColumn = null;
         Integer employeeNameColumn = null;
         Integer purchaseDateColumn = null;
@@ -86,8 +85,64 @@ public class DataService {
     }
 
     public void importData() {
-        System.out.println("Data imported");
-        dataImported = true;
+        String inputFile = "CellPhoneUsageByMonth.csv"; //TODO: Replace with file open dialog
+        //emplyeeId,date,totalMinutes,totalData
+        BufferedReader fileReader = null;
+        Integer employeeIdColumn = null;
+        Integer dateColumn = null;
+        Integer minutesColumn = null;
+        Integer dataColumn = null;
+
+        try {
+            fileReader = new BufferedReader(new FileReader(inputFile));
+            String headerLine = fileReader.readLine();
+            String[] headers = headerLine.split(DELIMITER);
+            if(headers.length < 4) {
+                throw new Exception("Insufficient number of headers");
+            }
+            for(int i = 0; i < headers.length; i++) {
+                switch(headers[i]) {
+                    case "employeeId":
+                        employeeIdColumn = i;
+                        break;
+                    case "date":
+                        dateColumn = i;
+                        break;
+                    case "totalMinutes":
+                        minutesColumn = i;
+                        break;
+                    case "totalData":
+                        dataColumn = i;
+                }
+            }
+            if(employeeIdColumn == null || dateColumn == null || minutesColumn == null || dataColumn == null) {
+                throw new Exception("Required column was not found");
+            }
+
+            String line;
+            while ((line = fileReader.readLine()) != null)
+            {
+                UsageRecord usageRecord = new UsageRecord();
+                String[] tokens = line.split(DELIMITER);
+
+                if(employeeIdColumn < tokens.length) {
+                    usageRecord.setEmployeeId(Integer.parseInt(tokens[employeeIdColumn]));
+                }
+                if(dateColumn < tokens.length) {
+                    usageRecord.setDate(usageDateFormat.parse(tokens[dateColumn]));
+                }
+                if(minutesColumn < tokens.length) {
+                    usageRecord.setTotalMinutes(Integer.parseInt(tokens[minutesColumn]));
+                }
+                if(dataColumn < tokens.length) {
+                    usageRecord.setTotalData(Float.parseFloat(tokens[dataColumn]));
+                }
+                usageRecordList.add(usageRecord);
+            }
+            dataImported = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getDataLoaded() {
@@ -95,6 +150,10 @@ public class DataService {
     }
 
     public List<Account> getAccountList() {
-        return this.accountList;
+        return accountList;
+    }
+
+    public List<UsageRecord> getUsageRecordList() {
+        return usageRecordList;
     }
 }
