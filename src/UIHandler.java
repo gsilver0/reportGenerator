@@ -4,6 +4,7 @@ import service.DataService;
 import service.PrintService;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -16,6 +17,7 @@ public class UIHandler implements ActionListener {
     private PrintService printService;
     JButton runReportButton;
     JComboBox<Integer> yearDropdown;
+    JLabel statusLabel;
 
     public UIHandler() {
         dataService = new DataService();
@@ -30,24 +32,39 @@ public class UIHandler implements ActionListener {
         this.yearDropdown = yearDropdown;
     }
 
+    public void setStatusLabel(JLabel statusLabel) {
+        this.statusLabel = statusLabel;
+    }
+
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         String action = actionEvent.getActionCommand();
-        switch(action) {
-            case IMPORT_USERS:
-                dataService.importUsers();
-                break;
-            case IMPORT_DATA:
-                dataService.importData();
-                break;
-            case RUN_REPORT:
-                List<Account> accountList = dataService.getAccountList();
-                List<UsageRecord> usageRecordList = dataService.getUsageRecordList();
-                printService.printReport(accountList, usageRecordList, Integer.parseInt(yearDropdown.getSelectedItem().toString()));
-        }
-        if(dataService.getDataLoaded()) {
-            runReportButton.setEnabled(true);
+        try {
+            switch (action) {
+                case IMPORT_USERS:
+                    dataService.importUsers();
+                    statusLabel.setForeground(Color.BLUE);
+                    statusLabel.setText("User and device data imported");
+                    break;
+                case IMPORT_DATA:
+                    dataService.importData();
+                    statusLabel.setForeground(Color.BLUE);
+                    statusLabel.setText("Usage data imported");
+                    break;
+                case RUN_REPORT:
+                    List<Account> accountList = dataService.getAccountList();
+                    List<UsageRecord> usageRecordList = dataService.getUsageRecordList();
+                    printService.printReport(accountList, usageRecordList, Integer.parseInt(yearDropdown.getSelectedItem().toString()));
+                    statusLabel.setForeground(Color.BLUE);
+                    statusLabel.setText("Export complete");
+            }
+            if (dataService.getDataLoaded()) {
+                runReportButton.setEnabled(true);
+            }
+        } catch (Exception e) {
+            statusLabel.setForeground(Color.RED);
+            statusLabel.setText(e.getMessage());
         }
     }
 }

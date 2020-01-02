@@ -67,6 +67,14 @@ public class ReportGenerator extends Frame {
         uiHandler.setRunReportButton(runReportButton);
 
         panel.add(runReportButton);
+
+        JLabel statusLabel = new JLabel("Ready");
+        statusLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        statusLabel.setForeground(Color.BLUE);
+        uiHandler.setStatusLabel(statusLabel);
+        panel.add(statusLabel);
+
+
         //frame.pack();
         frame.setVisible(true);
     }
