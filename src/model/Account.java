@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-public class Account {
+public class Account implements Comparable{
     private Integer employeeId;
     private String employeeName;
     private Date purchaseDate;
@@ -54,5 +54,10 @@ public class Account {
     @Override
     public String toString() {
         return employeeId + " : " + employeeName + " : " + purchaseDate + " : " + model;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return Long.compare(purchaseDate.toInstant().toEpochMilli(), ((Account) o).getPurchaseDate().toInstant().toEpochMilli());
     }
 }

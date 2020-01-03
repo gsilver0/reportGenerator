@@ -7,15 +7,21 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DataService {
     private static final String DELIMITER = ",";
-    private SimpleDateFormat userDateFormat = new SimpleDateFormat("yyyymmdd");
-    private SimpleDateFormat usageDateFormat = new SimpleDateFormat("mm/dd/yyyy");
+    private SimpleDateFormat userDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat usageDateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-    boolean dataImported = false;
-    boolean usersImported = false;
+    private boolean dataImported = false;
+    private boolean usersImported = false;
 
     private List<Account> accountList;
     private List<UsageRecord> usageRecordList;
@@ -26,7 +32,7 @@ public class DataService {
     }
 
     public void importUsers() throws Exception {
-        String inputFile = "CellPhone.csv"; //TODO: Replace with file open dialog
+        String inputFile = "CellPhone2.csv"; //TODO: Replace with file open dialog
         Integer employeeIdColumn = null;
         Integer employeeNameColumn = null;
         Integer purchaseDateColumn = null;
@@ -77,6 +83,9 @@ public class DataService {
             }
             accountList.add(account);
         }
+
+        //Ensure that devices are sorted by purchase date
+        accountList = accountList.stream().sorted().collect(Collectors.toList());
         usersImported = true;
     }
 
@@ -145,5 +154,39 @@ public class DataService {
 
     public List<UsageRecord> getUsageRecordList() {
         return usageRecordList;
+    }
+
+
+    public Map<Integer, List<Account>> getAccountsForYear(int year) {
+        if(!usersImported) {
+            return Collections.EMPTY_MAP;
+        }
+        Map<Integer, List<Account>> sortedAccountMap = new HashMap<>();
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, 0, 2);
+        Date secondDayOfYear = cal.getTime();
+        cal.set(year, 11, 31);
+        Date lastDayOfYear = cal.getTime();
+        for(Account account : accountList) {
+            if(account.getPurchaseDate().after(lastDayOfYear)) {
+                continue;
+            }
+            //Look for devices replaced on or prior to the beginning of the year and remove
+            if(account.getPurchaseDate().before(secondDayOfYear)
+                    && sortedAccountMap.get(account.getEmployeeId()) != null
+                    && !sortedAccountMap.get(account.getEmployeeId()).isEmpty()
+            ) {
+                sortedAccountMap.put(account.getEmployeeId(), new ArrayList<>());
+            }
+            if(sortedAccountMap.get(account.getEmployeeId()) == null) {
+                sortedAccountMap.put(account.getEmployeeId(), new ArrayList<>());
+            }
+            sortedAccountMap.get(account.getEmployeeId()).add(account);
+        }
+        return sortedAccountMap;
+    }
+
+    public List<UsageRecord> getUsageRecordListForYear(int year) {
+        return usageRecordList.stream().filter(r -> (r.getDate().getYear() + 1900) == year).collect(Collectors.toList());
     }
 }

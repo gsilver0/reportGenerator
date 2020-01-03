@@ -1,9 +1,6 @@
-import service.DataService;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.Calendar;
-import java.util.Date;
 
 public class ReportGenerator extends Frame {
     public static void main(String[] args) {
@@ -40,9 +37,7 @@ public class ReportGenerator extends Frame {
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.add(label);
 
-        Date today = new Date();
         Calendar cal = Calendar.getInstance();
-        cal.setTime(today);
 
         //Populate year dropdown
         Integer[] years = new Integer[5];
@@ -73,7 +68,6 @@ public class ReportGenerator extends Frame {
         statusLabel.setForeground(Color.BLUE);
         uiHandler.setStatusLabel(statusLabel);
         panel.add(statusLabel);
-
 
         //frame.pack();
         frame.setVisible(true);

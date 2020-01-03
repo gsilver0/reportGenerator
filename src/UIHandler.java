@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Map;
 
 public class UIHandler implements ActionListener {
     public static final String IMPORT_USERS = "importUsers";
@@ -53,9 +54,10 @@ public class UIHandler implements ActionListener {
                     statusLabel.setText("Usage data imported");
                     break;
                 case RUN_REPORT:
-                    List<Account> accountList = dataService.getAccountList();
-                    List<UsageRecord> usageRecordList = dataService.getUsageRecordList();
-                    printService.printReport(accountList, usageRecordList, Integer.parseInt(yearDropdown.getSelectedItem().toString()));
+                    Integer year = Integer.parseInt(yearDropdown.getSelectedItem().toString());
+                    Map<Integer, List<Account>> accountList = dataService.getAccountsForYear(year);
+                    List<UsageRecord> usageRecordList = dataService.getUsageRecordListForYear(year);
+                    printService.printReport(accountList, usageRecordList, year);
                     statusLabel.setForeground(Color.BLUE);
                     statusLabel.setText("Export complete");
             }

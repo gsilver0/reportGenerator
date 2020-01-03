@@ -1,0 +1,16 @@
+employeeId,employeeName,purchaseDate,model,comment
+1903,Stevie Griffin,20150101,Samsung Galaxy 6
+1904,Peter Griffin,20180501,Apple iPhone 6d, current year out of order
+1904,Peter Griffin,20181101,Apple iPhone 6e, current year out of order
+1904,Peter Griffin,20160101,Apple iPhone 6a, previous year
+1904,Peter Griffin,20170101,Apple iPhone 6b, previous year
+1904,Peter Griffin,20180301,Apple iPhone 6c, current year, mid-year
+1904,Peter Griffin,20190101,Apple iPhone 6f, next year
+1905,Lois Griffin,20150405,Apple iPhone 6
+1906,Brian Griffin,20150101,Samsung Galaxy 6
+1906,Brian Griffin,20180101,Samsung Galaxy 6, edge case: phone replaced on the first of the year 2018
+1907,Meg Griffin,20160101,Apple iPhone 6
+1908,Glenn Quagmire,20150405,Apple iPhone 6
+1909,Chris Griffin,20150101,Samsung Galaxy 6
+1910,Cleveland Brown,20160101,Apple iPhone 6
+1911,Joe Swanson,20150405,Apple iPhone 6
