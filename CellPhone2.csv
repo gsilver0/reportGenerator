@@ -1,7 +1,7 @@
 employeeId,employeeName,purchaseDate,model,comment
 1903,Stevie Griffin,20150101,Samsung Galaxy 6
 1904,Peter Griffin,20180501,Apple iPhone 6d, current year out of order
-1904,Peter Griffin,20181101,Apple iPhone 6e, current year out of order
+1904,Peter Griffin,20181115,Apple iPhone 6e, current year and mid-month out of order
 1904,Peter Griffin,20160101,Apple iPhone 6a, previous year
 1904,Peter Griffin,20170101,Apple iPhone 6b, previous year
 1904,Peter Griffin,20180301,Apple iPhone 6c, current year, mid-year

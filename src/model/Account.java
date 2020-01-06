@@ -60,4 +60,9 @@ public class Account implements Comparable{
     public int compareTo(Object o) {
         return Long.compare(purchaseDate.toInstant().toEpochMilli(), ((Account) o).getPurchaseDate().toInstant().toEpochMilli());
     }
+
+    public Long getAccountHashKey() {
+        //Just a simple hash key to help with lookups...
+        return Long.valueOf(employeeId) * 3L + Long.valueOf(purchaseDate.toInstant().toEpochMilli()) * 5L;
+    }
 }

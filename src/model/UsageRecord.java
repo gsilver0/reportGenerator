@@ -2,7 +2,7 @@ package model;
 
 import java.util.Date;
 
-public class UsageRecord {
+public class UsageRecord implements Comparable{
     private Integer employeeId;
     private Date date;
     private Integer totalMinutes;
@@ -54,5 +54,10 @@ public class UsageRecord {
     @Override
     public String toString() {
         return employeeId + " : " + date + " : Minutes: " + totalMinutes + " : Data: " + totalData;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return Long.compare(date.toInstant().toEpochMilli(), ((UsageRecord) o).getDate().toInstant().toEpochMilli());
     }
 }

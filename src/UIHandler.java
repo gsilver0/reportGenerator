@@ -1,5 +1,3 @@
-import model.Account;
-import model.UsageRecord;
 import service.DataService;
 import service.PrintService;
 
@@ -7,8 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
-import java.util.Map;
 
 public class UIHandler implements ActionListener {
     public static final String IMPORT_USERS = "importUsers";
@@ -44,6 +40,7 @@ public class UIHandler implements ActionListener {
         try {
             switch (action) {
                 case IMPORT_USERS:
+
                     dataService.importUsers();
                     statusLabel.setForeground(Color.BLUE);
                     statusLabel.setText("User and device data imported");
@@ -55,9 +52,7 @@ public class UIHandler implements ActionListener {
                     break;
                 case RUN_REPORT:
                     Integer year = Integer.parseInt(yearDropdown.getSelectedItem().toString());
-                    Map<Integer, List<Account>> accountList = dataService.getAccountsForYear(year);
-                    List<UsageRecord> usageRecordList = dataService.getUsageRecordListForYear(year);
-                    printService.printReport(accountList, usageRecordList, year);
+                    printService.printReport(dataService.getReportDataForYear(year), year);
                     statusLabel.setForeground(Color.BLUE);
                     statusLabel.setText("Export complete");
             }
@@ -67,6 +62,7 @@ public class UIHandler implements ActionListener {
         } catch (Exception e) {
             statusLabel.setForeground(Color.RED);
             statusLabel.setText(e.getMessage());
+            System.out.println(e.getStackTrace());
         }
     }
 }

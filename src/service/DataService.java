@@ -1,6 +1,8 @@
 package service;
 
 import model.Account;
+import model.MonthlyUsagePerDevice;
+import model.ReportData;
 import model.UsageRecord;
 
 import java.io.BufferedReader;
@@ -187,6 +189,45 @@ public class DataService {
     }
 
     public List<UsageRecord> getUsageRecordListForYear(int year) {
-        return usageRecordList.stream().filter(r -> (r.getDate().getYear() + 1900) == year).collect(Collectors.toList());
+        return usageRecordList.stream().filter(r -> (r.getDate().getYear() + 1900) == year).sorted().collect(Collectors.toList());
+    }
+
+    public ReportData getReportDataForYear(int year) {
+        ReportData reportData = new ReportData();
+        reportData.setRunDate(new Date());
+        reportData.setAccountMap(getAccountsForYear(year));
+        setMonthlyUsageData(reportData, year);
+
+        return reportData;
+    }
+
+    public void setMonthlyUsageData(ReportData reportData, int year) {
+        Map<Integer, UsageRecord> employeeUsageSummary;
+        List<UsageRecord> usageRecordList = getUsageRecordListForYear(year);
+        Map<Long, MonthlyUsagePerDevice> monthlyUsagePerDeviceMap = new HashMap<>();
+        Map<Integer, Integer> currentDeviceForEmployeeMap = new HashMap<>();
+
+        for(UsageRecord usageRecord : usageRecordList) {
+            //Determine which device the employee is using at the time
+            Integer employeeId = usageRecord.getEmployeeId();
+            if(currentDeviceForEmployeeMap.get(employeeId) == null) {
+                currentDeviceForEmployeeMap.put(employeeId, 0);
+            }
+            Integer currentDeviceForEmployee = currentDeviceForEmployeeMap.get(employeeId);
+
+            if((currentDeviceForEmployee + 1 < reportData.getAccountMap().get(employeeId).size())
+              && usageRecord.getDate().after(reportData.getAccountMap().get(employeeId).get(currentDeviceForEmployee).getPurchaseDate())) {
+                currentDeviceForEmployee++;
+                currentDeviceForEmployeeMap.put(employeeId, currentDeviceForEmployee);
+            }
+            Account currentAccount = reportData.getAccountMap().get(employeeId).get(currentDeviceForEmployee);
+            Long lookupKey = currentAccount.getAccountHashKey();
+            if(monthlyUsagePerDeviceMap.get(lookupKey) == null) {
+                monthlyUsagePerDeviceMap.put(lookupKey, new MonthlyUsagePerDevice(currentAccount));
+            }
+            monthlyUsagePerDeviceMap.get(lookupKey).addDataUsage(usageRecord.getDate().getMonth(), usageRecord.getTotalData());
+            monthlyUsagePerDeviceMap.get(lookupKey).addMinutesUsage(usageRecord.getDate().getMonth(), usageRecord.getTotalMinutes());
+        }
+        reportData.setMonthlyUsagePerDeviceMap(monthlyUsagePerDeviceMap);
     }
 }
