@@ -40,7 +40,6 @@ public class UIHandler implements ActionListener {
         try {
             switch (action) {
                 case IMPORT_USERS:
-
                     dataService.importUsers();
                     statusLabel.setForeground(Color.BLUE);
                     statusLabel.setText("User and device data imported");

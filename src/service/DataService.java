@@ -216,7 +216,7 @@ public class DataService {
             Integer currentDeviceForEmployee = currentDeviceForEmployeeMap.get(employeeId);
 
             if((currentDeviceForEmployee + 1 < reportData.getAccountMap().get(employeeId).size())
-              && usageRecord.getDate().after(reportData.getAccountMap().get(employeeId).get(currentDeviceForEmployee).getPurchaseDate())) {
+              && usageRecord.getDate().after(reportData.getAccountMap().get(employeeId).get(currentDeviceForEmployee + 1).getPurchaseDate())) {
                 currentDeviceForEmployee++;
                 currentDeviceForEmployeeMap.put(employeeId, currentDeviceForEmployee);
             }
