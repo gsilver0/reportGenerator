@@ -20,6 +20,7 @@ public class ReportGenerator extends Frame {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         frame.add(panel);
+        uiHandler.setPanel(panel);
 
         JButton importRecordsBtn = new JButton("Import employee records");
         importRecordsBtn.setAlignmentX(Component.CENTER_ALIGNMENT);

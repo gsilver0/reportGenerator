@@ -6,6 +6,7 @@ import model.ReportData;
 import model.UsageRecord;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,14 +34,14 @@ public class DataService {
         usageRecordList = new ArrayList<>();
     }
 
-    public void importUsers() throws Exception {
-        String inputFile = "CellPhone2.csv"; //TODO: Replace with file open dialog
+    public void importUsers(File inputFile) throws Exception {
+        //String inputFile = "CellPhone2.csv"; //Test file
         Integer employeeIdColumn = null;
         Integer employeeNameColumn = null;
         Integer purchaseDateColumn = null;
         Integer modelColumn = null;
 
-        BufferedReader fileReader = new BufferedReader(new FileReader(inputFile));
+        BufferedReader fileReader =  new BufferedReader(new FileReader(inputFile));
         String headerLine = fileReader.readLine();
         String[] headers = headerLine.split(DELIMITER);
         if(headers.length < 4) {
@@ -91,8 +92,8 @@ public class DataService {
         usersImported = true;
     }
 
-    public void importData() throws Exception {
-        String inputFile = "CellPhoneUsageByMonth.csv"; //TODO: Replace with file open dialog
+    public void importData(File inputFile) throws Exception {
+        //String inputFile = "CellPhoneUsageByMonth.csv"; //Test file
         Integer employeeIdColumn = null;
         Integer dateColumn = null;
         Integer minutesColumn = null;
